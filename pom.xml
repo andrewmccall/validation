@@ -53,6 +53,17 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+		<repository>
+			<id>release</id>
+			<url>${release.url}</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot</id>
+			<url>${snapshot.url}</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<build>
         <plugins>
             <plugin>
