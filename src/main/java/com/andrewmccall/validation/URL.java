@@ -1,5 +1,7 @@
 package com.andrewmccall.validation;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -36,19 +38,25 @@ public @interface URL {
 
     String[] protocols() default {"http", "https"};
 
-    class URLValidator implements ConstraintValidator<URL, Object> {
+    boolean ignoreEmpty() default true;
+
+    class URLValidator implements ConstraintValidator<URL, String> {
 
         static final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regexp);
         
         String[] protocols;
+        boolean ignoreEmpty;
 
         public void initialize(URL url) {
             this.protocols = url.protocols();
+            this.ignoreEmpty = url.ignoreEmpty();
         }
 
-        public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-            if (o != null) {
-                String s = o.toString();
+        public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+            if (s != null) {
+                if (ignoreEmpty && StringUtils.trimToNull(s) == null)
+                    return true;
+                
                 Matcher m = pattern.matcher(s);
                 if (!m.matches())
                     return false;

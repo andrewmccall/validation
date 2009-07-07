@@ -23,8 +23,31 @@ public class URLTest extends AbstractAnnotationTest {
     }
 
     @Test
+    public void testSuccessForEmpty() {
+        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(""));
+        assertTrue("We're not testing for \"\", should have no violations", violations.isEmpty());
+
+        class TestObject2 {
+            @URL(ignoreEmpty = false)
+            String url;
+
+            TestObject2(String url) {
+                this.url = url;
+            }
+        }
+        Set<ConstraintViolation<TestObject2>> violations2 = validator.validate(new TestObject2(""));
+        assertFalse("We're testing for \"\", should have violations", violations2.isEmpty());
+    }
+
+
+    @Test
     public void testValidURLs() {
-        String url = "http://andrewmccall.com";
+
+        String url = "";
+        assertInvalidPattern(url);
+        assertNoViolations(url);
+
+        url = "http://andrewmccall.com";
         assertValidPattern(url);
         assertNoViolations(url);
 
@@ -75,17 +98,21 @@ public class URLTest extends AbstractAnnotationTest {
     }
 
     @Test
-    public void testUnknownTLD () {
+    public void testUnknownTLD() {
         String url = "http://andrew.mccall";
         assertInvalidPattern(url);
         assertViolations(url);
     }
 
     @Test
-    public void testCustomProtocol () {
+    public void testCustomProtocol() {
         class TestObject2 {
-            @URL(protocols={"http", "custom"}) String url;
-            TestObject2(String url) { this.url = url; }
+            @URL(protocols = {"http", "custom"})
+            String url;
+
+            TestObject2(String url) {
+                this.url = url;
+            }
         }
 
         String url = "http://andrewmccall.com";
@@ -104,14 +131,14 @@ public class URLTest extends AbstractAnnotationTest {
      * For an invalid protocol the URL should match the pattern, but it should throw violations.
      */
     @Test
-    public void testBadProtocol () {
+    public void testBadProtocol() {
         String url = "ftp://andrewmccall.com";
         assertValidPattern(url);
         assertViolations(url);
     }
 
     private void assertValidPattern(String url) {
-        assertTrue("The url should be valid (" + url +")", urlPattern.matcher(url).matches());
+        assertTrue("The url should be valid (" + url + ")", urlPattern.matcher(url).matches());
     }
 
     private void assertNoViolations(String url) {
@@ -129,7 +156,11 @@ public class URLTest extends AbstractAnnotationTest {
     }
 
     class TestObject {
-        @URL String url;
-        TestObject(String url) { this.url = url; }
+        @URL
+        String url;
+
+        TestObject(String url) {
+            this.url = url;
+        }
     }
 }
