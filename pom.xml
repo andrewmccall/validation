@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.andrewmccall</groupId>
+    <artifactId>validation</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name></name>
+    <url>http://github.com/andrewmccall/validation</url>
+    <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.CR2</version>
+        </dependency>
+
+        <!-- required for test package -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+			<scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jcl</artifactId>
+            <version>1.5.8</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Validation -->
+
+        <!-- this is an implementation of the javax.validation stuff, You will need to include one to make it work-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.0.0.Beta1</version>
+            <optional>true</optional>
+        </dependency>
+		<!-- You only need to include this if you're using spring or files from the com.andrewmccall.valudation.springframework pacakge. -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>2.5.6.SEC01</version>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>Hibernate</id>
+            <url>http://repository.jboss.org/maven2/</url>
+        </repository>
+    </repositories>
+
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+       </plugins>
+    </build>
+</project>
