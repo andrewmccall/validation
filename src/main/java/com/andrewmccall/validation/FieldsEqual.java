@@ -3,6 +3,7 @@ package com.andrewmccall.validation;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.apache.commons.beanutils.PropertyUtils;
+import static org.apache.commons.beanutils.PropertyUtils.getProperty;
 
 import javax.validation.Constraint;
 import javax.validation.ReportAsSingleViolation;
@@ -53,15 +54,15 @@ public @interface FieldsEqual {
                 try {
 
                     if (value == null)
-                        value = PropertyUtils.getProperty(o, field);
-                    else if (!value.equals(PropertyUtils.getProperty(o, field)))
+                        value = getProperty(o, field);
+                    else if (!value.equals(getProperty(o, field)))
                         return false;
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Can't access field " + field, e);
+                    throw new RuntimeException(e.getMessage(), e);
                 } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("Failed to get field " + field, e);
+                    throw new RuntimeException(e.getMessage(), e);
                 } catch (InvocationTargetException e) {
-                    throw new RuntimeException("Failed to get field " + field, e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
             return true;
