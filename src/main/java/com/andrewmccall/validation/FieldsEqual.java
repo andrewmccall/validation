@@ -2,6 +2,7 @@ package com.andrewmccall.validation;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.validation.Constraint;
 import javax.validation.ReportAsSingleViolation;
@@ -13,6 +14,7 @@ import java.lang.annotation.Documented;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.lang.annotation.ElementType.TYPE;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Annotation that checks that two fields in a given object are .equal().
@@ -49,15 +51,17 @@ public @interface FieldsEqual {
                 if (log.isDebugEnabled())
                     log.debug("Testing field " + field);
                 try {
-                    Field f = o.getClass().getDeclaredField(field);
+
                     if (value == null)
-                        value = f.get(o);
-                    else if (!value.equals(f.get(o)))
+                        value = PropertyUtils.getProperty(o, field);
+                    else if (!value.equals(PropertyUtils.getProperty(o, field)))
                         return false;
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException("No such field " + field, e);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException("Can't access field " + field, e);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException("Failed to get field " + field, e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException("Failed to get field " + field, e);
                 }
             }
             return true;
