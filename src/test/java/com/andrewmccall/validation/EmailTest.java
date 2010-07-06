@@ -52,11 +52,21 @@ public class EmailTest extends AbstractAnnotationTest {
     public void testUnknownTLDFails() {
         assertViolation("test@test.test");
     }
+    
+    @Test
+    public void testTwoLetterTLD() {
+        assertSuccess("test@test.co.uk");
+    }
 
     @Test
     public void testSuccess() {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject("firstname.lastname@test.com"));
-        assertTrue("We're not testing for null, should have no violations", violations.isEmpty());
+    	assertSuccess("firstname.lastname@test.com");
+        
+    }
+    
+    private void assertSuccess(String test) {
+    	Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(test));
+        assertTrue("We should have no violations for email " + test, violations.isEmpty());
     }
 
     private void assertViolation(String test) {
