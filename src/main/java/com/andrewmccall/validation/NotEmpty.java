@@ -1,9 +1,6 @@
 package com.andrewmccall.validation;
 
-import javax.validation.Constraint;
-import javax.validation.ReportAsSingleViolation;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import javax.validation.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Target;
@@ -38,6 +35,8 @@ public @interface NotEmpty {
     String message() default "{constraints.NotEmpty}";
 
     Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 
     class NotEmptyValidator implements ConstraintValidator<NotEmpty, Object> {
         

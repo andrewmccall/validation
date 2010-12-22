@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.andrewmccall</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0.0</version>
-	</parent>
+    <parent>
+        <groupId>com.andrewmccall</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
     <groupId>com.andrewmccall.validation</groupId>
     <artifactId>validation</artifactId>
     <packaging>jar</packaging>
@@ -16,13 +16,13 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>1.0.CR2</version>
+            <version>1.0.0.GA</version>
         </dependency>
 
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
+            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -34,32 +34,31 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.4</version>
-			<scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jcl</artifactId>
-            <version>1.5.8</version>
+            <version>4.7</version>
             <scope>test</scope>
         </dependency>
+
         <!-- Validation -->
 
         <!-- this is an implementation of the javax.validation stuff, You will need to include one to make it work-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>4.0.0.Beta1</version>
+            <version>4.0.2.GA</version>
             <optional>true</optional>
         </dependency>
-		<!-- You only need to include this if you're using spring or files from the com.andrewmccall.valudation.springframework pacakge. -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>2.5.6.SEC01</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jcl</artifactId>
+            <version>1.5.8</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

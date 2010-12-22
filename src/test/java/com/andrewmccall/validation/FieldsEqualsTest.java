@@ -36,14 +36,14 @@ public class FieldsEqualsTest extends AbstractAnnotationTest {
 
     protected void assertErrorsContains(String field, Set<ConstraintViolation<ReflectionTestObject>> violations) {
         for (ConstraintViolation<ReflectionTestObject> e : violations)
-            if (e.getPropertyPath().equals(field))
+            if (e.getPropertyPath().iterator().next().getName().equals(field))
                     return;
         fail("The field: " + field + " could not be found in the ConstraintViolations:" + violations.toString());
     }
 
     protected void assertErrorsContains2(String field, Set<ConstraintViolation<ReflectionTestObject2>> violations) {
         for (ConstraintViolation<ReflectionTestObject2> e : violations)
-            if (e.getPropertyPath().equals(field))
+            if (e.getPropertyPath().iterator().next().getName().equals(field))
                     return;
         fail("The field: " + field + " could not be found in the ConstraintViolations:" + violations.toString());
     }

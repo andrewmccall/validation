@@ -2,10 +2,7 @@ package com.andrewmccall.validation;
 
 import org.apache.commons.lang.StringUtils;
 
-import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ReportAsSingleViolation;
+import javax.validation.*;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -35,6 +32,8 @@ public @interface URL {
     String message() default "{constraints.InvalidURL}";
 
     Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 
     String[] protocols() default {"http", "https"};
 
