@@ -15,7 +15,7 @@
     <scm>
         <url>http://github.com/andrewmccall/validation</url>
         <connection>scm:git:http://github.com/andrewmccall/validation.git</connection>
-        <developerConnection>scm:git:ssh://github.com/andrewmccall/validation.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:andrewmccall/validation.git</developerConnection>
     </scm>
     <dependencies>
         <dependency>
