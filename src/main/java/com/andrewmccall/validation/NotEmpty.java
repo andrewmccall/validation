@@ -1,11 +1,17 @@
 package com.andrewmccall.validation;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.validation.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Documented;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.FIELD;
@@ -39,11 +45,20 @@ public @interface NotEmpty {
     Class<? extends Payload>[] payload() default {};
 
     class NotEmptyValidator implements ConstraintValidator<NotEmpty, Object> {
-        
-        public void initialize(NotEmpty notEmpty) {}
+
+        public void initialize(NotEmpty notEmpty) {
+        }
 
         public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-            return true;
+            if (o == null)
+                return false;
+
+            if (o instanceof String && StringUtils.isEmpty((String) o)) return false;
+            else if (o instanceof Collection && ((Collection) o).isEmpty()) return false;
+            else if (o instanceof Map && ((Map) o).isEmpty()) return false;
+            else if (o.getClass().isArray() && Array.getLength(o) == 0) return false;
+            else
+                return true;
         }
     }
 }

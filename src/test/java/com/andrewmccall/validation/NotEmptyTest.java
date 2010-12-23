@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import javax.validation.ConstraintViolation;
-import java.util.Set;
+import java.util.*;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -15,27 +15,51 @@ public class NotEmptyTest extends AbstractAnnotationTest {
 
     @Test
     public void testNull() {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(null));
+        Set<ConstraintViolation<TestStringObject>> violations = validator.validate(new TestStringObject(null));
         assertEquals("We should have a single violation", 1, violations.size());
         assertViolation("test", violations);
     }
 
     @Test
     public void testEmpty() {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(""));
-        assertEquals("We should have a single violation", 1, violations.size());
-        assertViolation("test", violations);
+        assertViolation("test", validator.validate(new TestStringObject("")));
+        assertViolation("test", validator.validate(new TestArrayObject(new byte[0])));
+        assertViolation("test", validator.validate(new TestCollectionObject(new ArrayList())));
+        assertViolation("test", validator.validate(new TestMapObject(new HashMap())));
     }
 
     @Test
     public void testSuccess() {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject("Test"));
-        assertTrue("We should have no violations", violations.isEmpty());
+        assertValid("test", validator.validate(new TestStringObject("test")));
+        assertValid("test", validator.validate(new TestArrayObject(new byte[]{0x1})));
+
+        ArrayList list = new ArrayList();
+        list.add("test");
+        assertValid("test", validator.validate(new TestCollectionObject(list)));
+
+        HashMap map = new HashMap();
+        map.put("blah", "blah");
+        assertValid("test", validator.validate(new TestMapObject(map)));
     }
 
-    class TestObject {
+    class TestStringObject {
         @NotEmpty String test;
-        TestObject(String test) {this.test = test;}
+        TestStringObject(String test) {this.test = test;}
+    }
+
+    class TestArrayObject {
+        @NotEmpty byte[] test;
+        TestArrayObject(byte[] test) {this.test = test;}
+    }
+
+    class TestCollectionObject {
+        @NotEmpty Collection test;
+        TestCollectionObject(Collection test) {this.test = test;}
+    }
+
+    class TestMapObject {
+        @NotEmpty Map test;
+        TestMapObject(Map test) {this.test = test;}
     }
 
 }

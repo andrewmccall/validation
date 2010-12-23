@@ -14,13 +14,14 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.util.regex.Matcher;
 
 /**
  * Validates a URL, it's not entierly clever. By default only supports http and https as protocols however they can be
  * added by using the protocls parameter eg @URL(protocols={"http", "https", "ftp", "file"})
  */
-@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Documented
 @Constraint(validatedBy = {URL.URLValidator.class})
@@ -35,14 +36,20 @@ public @interface URL {
 
     Class<? extends Payload>[] payload() default {};
 
+    /**
+     * protocols this annotation accepts.
+     */
     String[] protocols() default {"http", "https"};
 
+    /**
+     * ignores the annotation if the value is null or empty.
+     */
     boolean ignoreEmpty() default true;
 
     class URLValidator implements ConstraintValidator<URL, String> {
 
         static final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regexp);
-        
+
         String[] protocols;
         boolean ignoreEmpty;
 
@@ -55,7 +62,7 @@ public @interface URL {
             if (s != null) {
                 if (ignoreEmpty && StringUtils.trimToNull(s) == null)
                     return true;
-                
+
                 Matcher m = pattern.matcher(s);
                 if (!m.matches())
                     return false;

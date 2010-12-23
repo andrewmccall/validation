@@ -35,6 +35,9 @@ public @interface Email {
 
     Class<? extends Payload>[] payload() default {};
 
+    /**
+     * ignores the annotation if the value is null or empty.
+     */
     boolean ignoreEmpty() default true;
 
     class EmailValidator implements ConstraintValidator<Email, String> {
