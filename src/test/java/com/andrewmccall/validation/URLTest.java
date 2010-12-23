@@ -35,8 +35,7 @@ public class URLTest extends AbstractAnnotationTest {
                 this.url = url;
             }
         }
-        Set<ConstraintViolation<TestObject2>> violations2 = validator.validate(new TestObject2(""));
-        assertFalse("We're testing for \"\", should have violations", violations2.isEmpty());
+        assertViolation("url", validator.validate(new TestObject2("")));
     }
 
 
@@ -45,55 +44,55 @@ public class URLTest extends AbstractAnnotationTest {
 
         String url = "";
         assertInvalidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://andrewmccall.com";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://www.andrewmccall.com";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://random.andrewmccall.com";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://andrewmccall.com/";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://andrewmccall.com/index.html";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "HTTP://andrewmccall.com/index.html";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://AndrewMcCall.com/index.html";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://andrewmccall.COM/index.html";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://andrew:test@www.andrewmccall.com:1234/some/dir/index.html#result?foo=bar&foo2=bar2";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "http://localhost";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "andrewmccall.com";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
         url = "andrewmccall.com/some/dir/index.html#result?foo=bar&foo2=bar2";
         assertValidPattern(url);
-        assertNoViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
 
     }
 
@@ -101,7 +100,7 @@ public class URLTest extends AbstractAnnotationTest {
     public void testUnknownTLD() {
         String url = "http://andrew.mccall";
         assertInvalidPattern(url);
-        assertViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
     }
 
     @Test
@@ -134,26 +133,17 @@ public class URLTest extends AbstractAnnotationTest {
     public void testBadProtocol() {
         String url = "ftp://andrewmccall.com";
         assertValidPattern(url);
-        assertViolations(url);
+        assertValid("test", validator.validate(new TestObject(url)));
     }
 
     private void assertValidPattern(String url) {
         assertTrue("The url should be valid (" + url + ")", urlPattern.matcher(url).matches());
     }
 
-    private void assertNoViolations(String url) {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(url));
-        assertTrue("Should have no violations (" + url + ")", violations.isEmpty());
-    }
-
     private void assertInvalidPattern(String url) {
         assertFalse("The url should not be valid  (" + url + ")", urlPattern.matcher(url).matches());
     }
 
-    private void assertViolations(String url) {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(url));
-        assertFalse("Should have violations (" + url + ")", violations.isEmpty());
-    }
 
     class TestObject {
         @URL

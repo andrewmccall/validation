@@ -9,7 +9,7 @@
     <groupId>com.andrewmccall.validation</groupId>
     <artifactId>validation</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name></name>
     <url>http://github.com/andrewmccall/validation</url>
     <dependencies>

@@ -17,12 +17,14 @@ public class NotEmptyTest extends AbstractAnnotationTest {
     public void testNull() {
         Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(null));
         assertEquals("We should have a single violation", 1, violations.size());
+        assertViolation("test", violations);
     }
 
     @Test
     public void testEmpty() {
         Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(""));
         assertEquals("We should have a single violation", 1, violations.size());
+        assertViolation("test", violations);
     }
 
     @Test

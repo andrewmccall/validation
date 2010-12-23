@@ -40,40 +40,29 @@ public class EmailTest extends AbstractAnnotationTest {
 
     @Test
     public void testNormalStringFails() {
-        assertViolation("test");
+        assertViolation("email", validator.validate(new TestObject("test")));
     }
 
     @Test
     public void testNoTLDFails() {
-        assertViolation("test@test");
+        assertViolation("email", validator.validate(new TestObject("test@test")));
     }
 
     @Test
     public void testUnknownTLDFails() {
-        assertViolation("test@test.test");
+        assertViolation("email", validator.validate(new TestObject("test@test.test")));
     }
     
     @Test
     public void testTwoLetterTLD() {
-        assertSuccess("test@test.co.uk");
+        assertValid("email", validator.validate(new TestObject("test@test.co.uk")));
     }
 
     @Test
     public void testSuccess() {
-    	assertSuccess("firstname.lastname@test.com");
-        
+    	assertValid("email", validator.validate(new TestObject("firstname.lastname@test.com")));
     }
     
-    private void assertSuccess(String test) {
-    	Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(test));
-        assertTrue("We should have no violations for email " + test, violations.isEmpty());
-    }
-
-    private void assertViolation(String test) {
-        Set<ConstraintViolation<TestObject>> violations = validator.validate(new TestObject(test));
-        assertEquals("Should have a single violation for the invalid email '" + test + "'", 1, violations.size());
-    }
-
     class TestObject {
         @Email
         String email;
